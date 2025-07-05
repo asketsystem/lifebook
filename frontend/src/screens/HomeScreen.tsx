@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { THEME } from '../config';
 
 export default function HomeScreen() {
   return (
@@ -44,7 +45,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: THEME.colors.background,
   },
   scrollView: {
     flex: 1,
@@ -56,12 +57,12 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#2c3e50',
+    color: THEME.colors.primary,
     marginBottom: 5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#7f8c8d',
+    color: THEME.colors.text.secondary,
   },
   moodSection: {
     padding: 20,
@@ -70,22 +71,22 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#2c3e50',
+    color: THEME.colors.accent,
     marginBottom: 15,
   },
   moodContainer: {
-    backgroundColor: 'white',
+    backgroundColor: THEME.colors.surface,
     padding: 20,
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: THEME.colors.gradientEnd,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
     elevation: 3,
   },
   moodPlaceholder: {
     textAlign: 'center',
-    color: '#7f8c8d',
+    color: THEME.colors.text.secondary,
     fontSize: 16,
   },
   verseSection: {
@@ -93,25 +94,25 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   verseContainer: {
-    backgroundColor: 'white',
+    backgroundColor: THEME.colors.surface,
     padding: 20,
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: THEME.colors.gradientStart,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
     elevation: 3,
   },
   verseText: {
     fontSize: 16,
-    color: '#2c3e50',
+    color: THEME.colors.text.primary,
     lineHeight: 24,
     fontStyle: 'italic',
     marginBottom: 10,
   },
   verseReference: {
     fontSize: 14,
-    color: '#7f8c8d',
+    color: THEME.colors.accent,
     textAlign: 'right',
   },
   quickActions: {
@@ -119,18 +120,18 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   actionContainer: {
-    backgroundColor: 'white',
+    backgroundColor: THEME.colors.surface,
     padding: 20,
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: THEME.colors.gradientEnd,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
     elevation: 3,
   },
   actionPlaceholder: {
     textAlign: 'center',
-    color: '#7f8c8d',
+    color: THEME.colors.text.secondary,
     fontSize: 16,
   },
 }); 

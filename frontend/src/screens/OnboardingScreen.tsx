@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { THEME } from '../config';
 
 export default function OnboardingScreen() {
   return (
@@ -21,7 +22,7 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: THEME.colors.background,
   },
   content: {
     flex: 1,
@@ -32,18 +33,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#2c3e50',
+    color: THEME.colors.primary,
     textAlign: 'center',
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#7f8c8d',
+    color: THEME.colors.text.secondary,
     textAlign: 'center',
     marginBottom: 40,
   },
   button: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: THEME.colors.accent,
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 25,

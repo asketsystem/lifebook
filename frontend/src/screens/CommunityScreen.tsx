@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { THEME } from '../config';
 
 export default function CommunityScreen() {
   return (
@@ -21,7 +22,7 @@ export default function CommunityScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: THEME.colors.background,
   },
   content: {
     flex: 1,
@@ -32,27 +33,27 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#2c3e50',
+    color: THEME.colors.primary,
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#7f8c8d',
+    color: THEME.colors.text.secondary,
     textAlign: 'center',
     marginBottom: 40,
   },
   placeholder: {
-    backgroundColor: 'white',
+    backgroundColor: THEME.colors.surface,
     padding: 30,
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: THEME.colors.gradientEnd,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
     elevation: 3,
   },
   placeholderText: {
-    color: '#7f8c8d',
+    color: THEME.colors.text.secondary,
     fontSize: 16,
   },
 }); 
