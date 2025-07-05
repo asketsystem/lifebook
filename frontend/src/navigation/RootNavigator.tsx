@@ -63,7 +63,7 @@ function MainTabNavigator() {
 
 // Root navigator with authentication flow
 export default function RootNavigator() {
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, localOnboardingCompleted } = useAuth();
 
   // Show loading screen while checking auth state
   if (loading) {
@@ -71,7 +71,15 @@ export default function RootNavigator() {
   }
 
   const isAuthenticated = !!user;
-  const hasCompletedOnboarding = profile?.hasCompletedOnboarding ?? false;
+  const hasCompletedOnboarding = profile?.hasCompletedOnboarding ?? localOnboardingCompleted ?? false;
+  
+  console.log('Navigation state:', {
+    isAuthenticated,
+    profileHasCompleted: profile?.hasCompletedOnboarding,
+    localOnboardingCompleted,
+    hasCompletedOnboarding,
+    loading
+  });
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

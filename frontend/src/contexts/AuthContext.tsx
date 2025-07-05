@@ -49,6 +49,7 @@ interface AuthContextType {
   profile: UserProfile | null;
   loading: boolean;
   error: string | null;
+  localOnboardingCompleted: boolean;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string, name: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
@@ -56,6 +57,8 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
+  checkLocalOnboarding: () => Promise<void>;
+  setLocalOnboarding: (completed: boolean) => Promise<void>;
   clearError: () => void;
 }
 
@@ -72,6 +75,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [localOnboardingCompleted, setLocalOnboardingCompleted] = useState<boolean>(false);
 
   // Google OAuth configuration
   const googleConfig = {
@@ -149,12 +153,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!profile) throw new Error('No user profile found');
 
     try {
+      console.log('Updating user profile with:', updates);
       const updatedProfile = { ...profile, ...updates, updatedAt: new Date() };
       await updateDoc(doc(firestore, 'users', profile.uid), {
         ...updates,
         updatedAt: new Date(),
       });
       setProfile(updatedProfile);
+      console.log('Profile updated successfully');
     } catch (error) {
       console.error('Error updating user profile:', error);
       throw error;
@@ -196,8 +202,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Update display name
       await updateProfile(firebaseUser, { displayName: name });
       
-      // Create user profile
+      // Check if user completed onboarding locally
+      const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding') === 'true';
+      
+      // Create user profile with onboarding status
       const userProfile = createDefaultProfile(firebaseUser.uid, email, name);
+      if (hasCompletedOnboarding) {
+        userProfile.hasCompletedOnboarding = true;
+        // Clear the local storage since it's now in the profile
+        await AsyncStorage.removeItem('hasCompletedOnboarding');
+      }
+      
       await saveUserProfile(userProfile);
       setProfile(userProfile);
       
@@ -238,11 +253,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // Check if user profile exists, create if not
         let userProfile = await loadUserProfile(firebaseUser.uid);
         if (!userProfile) {
+          // Check if user completed onboarding locally
+          const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding') === 'true';
+          
           userProfile = createDefaultProfile(
             firebaseUser.uid,
             firebaseUser.email || '',
             firebaseUser.displayName || 'User'
           );
+          
+          if (hasCompletedOnboarding) {
+            userProfile.hasCompletedOnboarding = true;
+            // Clear the local storage since it's now in the profile
+            await AsyncStorage.removeItem('hasCompletedOnboarding');
+          }
+          
           await saveUserProfile(userProfile);
         }
         
@@ -287,11 +312,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             ? `${credential.fullName.givenName} ${credential.fullName.familyName}`
             : 'User';
           
+          // Check if user completed onboarding locally
+          const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding') === 'true';
+          
           userProfile = createDefaultProfile(
             firebaseUser.uid,
             firebaseUser.email || '',
             name
           );
+          
+          if (hasCompletedOnboarding) {
+            userProfile.hasCompletedOnboarding = true;
+            // Clear the local storage since it's now in the profile
+            await AsyncStorage.removeItem('hasCompletedOnboarding');
+          }
+          
           await saveUserProfile(userProfile);
         }
         
@@ -346,6 +381,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setError(null);
   };
 
+  // Check local onboarding completion
+  const checkLocalOnboarding = async (): Promise<void> => {
+    try {
+      const hasCompleted = await AsyncStorage.getItem('hasCompletedOnboarding');
+      setLocalOnboardingCompleted(hasCompleted === 'true');
+    } catch (error) {
+      console.error('Error checking local onboarding status:', error);
+      setLocalOnboardingCompleted(false);
+    }
+  };
+
+  // Set local onboarding completion
+  const setLocalOnboarding = async (completed: boolean): Promise<void> => {
+    try {
+      if (completed) {
+        await AsyncStorage.setItem('hasCompletedOnboarding', 'true');
+      } else {
+        await AsyncStorage.removeItem('hasCompletedOnboarding');
+      }
+      setLocalOnboardingCompleted(completed);
+    } catch (error) {
+      console.error('Error setting local onboarding status:', error);
+    }
+  };
+
   // Listen to auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -386,11 +446,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loadCachedUser();
   }, []);
 
+  // Check local onboarding completion on mount
+  useEffect(() => {
+    checkLocalOnboarding();
+  }, []);
+
   const value: AuthContextType = {
     user,
     profile,
     loading,
     error,
+    localOnboardingCompleted,
     signInWithEmail,
     signUpWithEmail,
     signInWithGoogle,
@@ -398,6 +464,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     signOut: handleSignOut,
     resetPassword,
     updateUserProfile,
+    checkLocalOnboarding,
+    setLocalOnboarding,
     clearError,
   };
 

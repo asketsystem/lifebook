@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { THEME } from '../config';
 import { useAuth } from '../contexts/AuthContext';
 import * as Animatable from 'react-native-animatable';
@@ -74,8 +74,7 @@ const slides = [
 
 export default function OnboardingScreen() {
   const [index, setIndex] = useState(0);
-  const { updateUserProfile, profile } = useAuth();
-  const navigation = useNavigation<any>();
+  const { updateUserProfile, profile, setLocalOnboarding } = useAuth();
 
   const handleNext = () => {
     if (index < slides.length - 1) setIndex(index + 1);
@@ -84,10 +83,17 @@ export default function OnboardingScreen() {
     if (index > 0) setIndex(index - 1);
   };
   const handleFinish = async () => {
+    console.log('handleFinish called, profile:', !!profile);
     if (profile) {
+      // Existing user - update their profile
+      console.log('Updating existing user profile');
       await updateUserProfile({ hasCompletedOnboarding: true });
+    } else {
+      // New user - store onboarding completion locally
+      console.log('Storing onboarding completion locally for new user');
+      await setLocalOnboarding(true);
     }
-    navigation.navigate('Auth');
+    console.log('handleFinish completed');
   };
 
   const slide = slides[index];
