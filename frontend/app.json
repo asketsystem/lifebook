@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "lifebook",
+    "slug": "lifebook",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/lifebook-logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -13,12 +13,14 @@
       "backgroundColor": "#0A0A0A"
     },
     "ios": {
+      "icon": "./assets/lifebook-logo.png",
       "supportsTablet": true
     },
     "android": {
+      "icon": "./assets/lifebook-logo.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/lifebook-logo.png",
+        "backgroundColor": "#0A0A0A"
       },
       "edgeToEdgeEnabled": true
     },
