@@ -25,28 +25,32 @@ export const FIREBASE_CONFIG = {
 // Theme Configuration
 export const THEME = {
   colors: {
-    primary: '#4A90E2',
-    secondary: '#7F8C8D',
-    success: '#27AE60',
-    warning: '#F39C12',
-    error: '#E74C3C',
-    background: '#F8F9FA',
-    surface: '#FFFFFF',
+    primary: '#B16DFF', // Purple from logo
+    secondary: '#00E0FF', // Cyan from logo
+    accent: '#7F6BFF', // Blue-violet from logo
+    gradientStart: '#B16DFF', // Purple
+    gradientMid: '#7F6BFF', // Blue-violet
+    gradientEnd: '#00E0FF', // Cyan
+    background: '#0A0A0A', // Black background
+    surface: '#181A20', // Dark surface
     text: {
-      primary: '#2C3E50',
-      secondary: '#7F8C8D',
-      light: '#BDC3C7',
+      primary: '#FFFFFF',
+      secondary: '#B3B3B3',
+      light: '#E0E0E0',
     },
     mood: {
       happy: '#F1C40F',
-      peaceful: '#3498DB',
-      grateful: '#E67E22',
-      hopeful: '#9B59B6',
+      peaceful: '#7F6BFF',
+      grateful: '#B16DFF',
+      hopeful: '#00E0FF',
       anxious: '#E74C3C',
       sad: '#34495E',
       angry: '#C0392B',
       lonely: '#95A5A6',
     },
+    error: '#E74C3C',
+    success: '#27AE60',
+    warning: '#F39C12',
   },
   spacing: {
     xs: 4,

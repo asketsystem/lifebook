@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -81,6 +82,11 @@ export default function AuthScreen() {
       >
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.header}>
+            <Image
+              source={require('../../assets/lifebook-logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
             <Text style={styles.title}>Welcome to LifeBook</Text>
             <Text style={styles.subtitle}>
               {isSignUp ? 'Create your account' : 'Sign in to continue your journey'}
@@ -214,6 +220,11 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: THEME.spacing.xxl,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: THEME.spacing.xl,
   },
   title: {
     fontSize: THEME.typography.h1.fontSize,
